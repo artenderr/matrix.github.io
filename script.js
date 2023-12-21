@@ -71,21 +71,6 @@ function renderLetters() {
   }
 }
 
-function animate(columns) {
-  // columns = Array.from(columns).slice(0, -1);
-  for (let i = 0; i < columns.length; i++) {
-    for (let j = 0; j < columns[i].children.length; j++) {
-      setTimeout(() => {
-        columns[i].children[j].style.color = "#1B4332";
-        setTimeout(() => {
-          columns[i].children[j].style.color = "#081C15";
-        }, 1250 * i + 250 * j);
-      }, 1250 * i + 250 * j);
-      // console.log(250 * i, 250 * j);
-    }
-  }
-}
-
 function animateColumn(column) {
   const standart = 50;
   let addition = 0;
@@ -107,12 +92,14 @@ function animate() {
 }
 
 // Функция рендеринга
-function render() {
+function render(event, timerId) {
   renderColumns();
   renderLetters();
-  setInterval(animate, 50);
+  clearInterval(timerId);
+  return setInterval(animate, 50);
 }
 
+
 // Первоначальный рендер
-render();
-window.addEventListener("resize", render);
+let timerId = render();
+window.addEventListener("resize", () => timerId = render(null, timerId));
